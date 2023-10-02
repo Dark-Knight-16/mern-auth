@@ -5,6 +5,7 @@ import "./index.css";
 // components
 import RootLayout from "./RootLayout.jsx";
 import SignUp from "./pages/SignUp";
+import SignIn from "./pages/SignIn";
 
 import {
   createBrowserRouter,
@@ -17,6 +18,7 @@ const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/" element={<RootLayout />}>
       <Route path="/sign-up" element={<SignUp />} />
+      <Route path="/sign-in" element={<SignIn />} />
     </Route>
   )
 );

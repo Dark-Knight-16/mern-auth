@@ -1,10 +1,11 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import {toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 const SignUp = () => {
   const [formData, setFormData] = useState({});
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -35,6 +36,9 @@ const SignUp = () => {
           progress: undefined,
           theme: "colored",
         });
+
+        navigate('/sign-in');
+        
       } else {
         toast.error(data.message, {
           position: "top-center",
@@ -53,7 +57,6 @@ const SignUp = () => {
   };
 
   return (
-    <>
       <section className="p-4 m-auto w-full max-w-lg">
         <div className="p-3 w-full text-2xl font-medium text-center">
           <h3>Sign Up</h3>
@@ -97,8 +100,6 @@ const SignUp = () => {
           </Link>
         </div>
       </section>
-      <ToastContainer />
-    </>
   );
 };
 
