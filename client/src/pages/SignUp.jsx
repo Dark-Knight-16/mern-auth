@@ -90,7 +90,6 @@ const SignUp = () => {
             >
               Sign Up
             </button>
-            <Link>Sign Up with Google</Link>
           </div>
         </form>
         <div className="flex gap-2 py-3">

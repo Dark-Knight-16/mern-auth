@@ -8,20 +8,20 @@ const userSchema = new mongoose.Schema(
   {
     username: {
       type: String,
-      required: [true, "username is required !"],
+      required: [true, "Username is required !"],
       unique: true,
     },
     email: {
       type: String,
-      required: [true, "email is required !"],
+      required: [true, "Email is required !"],
       unique: true,
       lowercase: true,
-      validate: [validator.isEmail, "enter a valid email !"]
+      validate: [validator.isEmail, "Enter a valid email !"]
     },
     password: {
       type: String,
-      required: [true, "password is required !"],
-      minLength: [6, "minimum password length is 6 characters !"]
+      required: [true, "Password is required !"],
+      minLength: [6, "Minimum password length is 6 characters !"]
     },
   },
   { timestamps: true }
@@ -34,6 +34,26 @@ userSchema.pre("save", async function (next) {
   this.password = hash;
   next();
 });
+
+userSchema.statics.login = async function(email, password){
+  if(email){
+    if(password){
+      const validUser = await this.findOne({email});
+
+      if(validUser){
+        const auth =  await bcrypt.compare(password, validUser.password)
+        if(auth){
+          const user = await this.findOne({_id: validUser._id}).select('username email');
+          return user
+        }
+        throw Error('incorrect password')
+      }
+      throw Error('incorrect email')
+    }
+    throw Error('empty password')
+  }
+  throw Error('empty email')
+}
 
 const User = mongoose.model("User", userSchema);
 
