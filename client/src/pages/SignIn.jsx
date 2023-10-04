@@ -4,6 +4,7 @@ import { toast } from "react-toastify";
 import { Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { signInSuccess } from "../redux/user/userSlice";
+import OAuth from "../components/OAuth";
 
 const SignIn = () => {
   const [formData, setFormData] = useState({});
@@ -87,6 +88,7 @@ const SignIn = () => {
             Sign In
           </button>
         </div>
+        <OAuth />
       </form>
       <div className="flex gap-2 py-3">
         <p>Don&#39;t have an account ?</p>

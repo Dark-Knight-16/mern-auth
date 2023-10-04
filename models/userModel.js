@@ -16,14 +16,20 @@ const userSchema = new mongoose.Schema(
       required: [true, "Email is required !"],
       unique: true,
       lowercase: true,
-      validate: [validator.isEmail, "Enter a valid email !"]
+      validate: [validator.isEmail, "Enter a valid email !"],
     },
     password: {
       type: String,
       required: [true, "Password is required !"],
-      minLength: [6, "Minimum password length is 6 characters !"]
+      minLength: [6, "Minimum password length is 6 characters !"],
+    },
+    profilePicture: {
+      type: String,
+      default:
+        "https://static.vecteezy.com/system/resources/previews/018/765/757/original/user-profile-icon-in-flat-style-member-avatar-illustration-on-isolated-background-human-permission-sign-business-concept-vector.jpg",
     },
   },
+
   { timestamps: true }
 );
 
@@ -35,25 +41,27 @@ userSchema.pre("save", async function (next) {
   next();
 });
 
-userSchema.statics.login = async function(email, password){
-  if(email){
-    if(password){
-      const validUser = await this.findOne({email});
+userSchema.statics.login = async function (email, password) {
+  if (email) {
+    if (password) {
+      const validUser = await this.findOne({ email });
 
-      if(validUser){
-        const auth =  await bcrypt.compare(password, validUser.password)
-        if(auth){
-          const user = await this.findOne({_id: validUser._id}).select('username email');
-          return user
+      if (validUser) {
+        const auth = await bcrypt.compare(password, validUser.password);
+        if (auth) {
+          const user = await this.findOne({ _id: validUser._id }).select(
+            "username email"
+          );
+          return user;
         }
-        throw Error('incorrect password')
+        throw Error("incorrect password");
       }
-      throw Error('incorrect email')
+      throw Error("incorrect email");
     }
-    throw Error('empty password')
+    throw Error("empty password");
   }
-  throw Error('empty email')
-}
+  throw Error("empty email");
+};
 
 const User = mongoose.model("User", userSchema);
 
