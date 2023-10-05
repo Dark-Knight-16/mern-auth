@@ -2,10 +2,13 @@ import { Link, NavLink } from "react-router-dom";
 import { BarIcon } from "./BarIcon";
 import { CrossIcon } from "./CrossIcon";
 import { useState, useEffect } from "react";
+import { useSelector } from "react-redux";
 
 const Header = () => {
   const [toggleMenu, setToggleMenu] = useState(false);
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+  const { currentUser } = useSelector((state) => state.user);
+  console.log(currentUser);
 
   const handleClick = () => {
     setToggleMenu(!toggleMenu);
@@ -42,7 +45,7 @@ const Header = () => {
         className={`${
           toggleMenu
             ? "block absolute top-0 right-0 left-0 pt-40 h-full bg-lime-200"
-            : "hidden lg:block"
+            : "hidden lg:flex lg:gap-5"
         }`}
       >
         <ul
@@ -65,16 +68,24 @@ const Header = () => {
           <li>
             <NavLink to={"/about"}>About</NavLink>
           </li>
-          <li>
-            <NavLink to={"/profile"}>Profile</NavLink>
-          </li>
-          <li className="p-2 text-white bg-green-500 rounded-md">
-            <NavLink to={"/sign-in"}>Sign In</NavLink>
-          </li>
-          <li className="p-2 text-white bg-blue-500 rounded-md">
-            <NavLink to={"/sign-up"}>Sign Up</NavLink>
-          </li>
+
+          {currentUser ? (
+            <li className="p-2 text-white bg-red-500 rounded-md">
+              <NavLink to={"/sign-out"}>Sign Out</NavLink>
+            </li>
+          ) : (
+            <li className="p-2 text-white bg-green-500 rounded-md">
+              <NavLink to={"/sign-in"}>Sign In</NavLink>
+            </li>
+          )}
         </ul>
+        {currentUser && (
+          <img
+            className="hidden lg:block lg:w-[50px] lg:h-[50px] lg:rounded-[50%] lg:cursor-pointer"
+            src={currentUser.user.profilePicture}
+            alt={currentUser.user.username}
+          />
+        )}
       </nav>
     </header>
   );

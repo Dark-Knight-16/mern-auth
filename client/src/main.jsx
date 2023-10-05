@@ -9,6 +9,7 @@ import { PersistGate } from "redux-persist/integration/react";
 import RootLayout from "./RootLayout.jsx";
 import SignUp from "./pages/SignUp";
 import SignIn from "./pages/SignIn";
+import Profile from "./pages/Profile";
 
 import {
   createBrowserRouter,
@@ -22,6 +23,7 @@ const router = createBrowserRouter(
     <Route path="/" element={<RootLayout />}>
       <Route path="/sign-up" element={<SignUp />} />
       <Route path="/sign-in" element={<SignIn />} />
+      <Route path="/profile" element={<Profile />} />
     </Route>
   )
 );

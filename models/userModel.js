@@ -50,7 +50,7 @@ userSchema.statics.login = async function (email, password) {
         const auth = await bcrypt.compare(password, validUser.password);
         if (auth) {
           const user = await this.findOne({ _id: validUser._id }).select(
-            "username email"
+            "username email profilePicture"
           );
           return user;
         }
