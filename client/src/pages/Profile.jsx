@@ -145,24 +145,19 @@ const Profile = () => {
             className="py-3 pl-4 w-full rounded-md bg-slate-100"
             onChange={handleChange}
           />
-          {/* <div className="flex flex-col"> */}
           <button
             type="submit"
             className="p-3 w-full text-white bg-blue-500 rounded-md hover:opacity-80"
           >
             Update
           </button>
-          {/* </div> */}
         </form>
-        {/* <div className="flex flex-col"> */}
         <button
           type="submit"
           className="p-3 w-full text-white bg-red-500 rounded-md hover:opacity-80"
         >
           Delete Profile
         </button>
-        {/* </div> */}
-        <div></div>
       </section>
     );
   }
