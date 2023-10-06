@@ -16,7 +16,7 @@ const signup = async (req, res) => {
 
   try {
     const user = await User.create({ username, email, password });
-    const {password:hash, ...rest} = user._doc;
+    const { password: hash, ...rest } = user._doc;
     const token = createToken(user._id);
     res
       .cookie("jwt", token, { secure: true, maxAge: maxAge * 1000 })
@@ -62,7 +62,9 @@ const signin = async (req, res) => {
 // google
 const google = async (req, res, next) => {
   try {
-    const user = await User.findOne({ email: req.body.email }).select('username email profilePicture');
+    const user = await User.findOne({ email: req.body.email }).select(
+      "username email profilePicture"
+    );
 
     if (user) {
       const token = createToken(user._id);
@@ -91,7 +93,7 @@ const google = async (req, res, next) => {
         password: hash,
         profilePicture: req.body.photo,
       });
-      const {password, ...rest} = newUser._doc;
+      const { password, ...rest } = newUser._doc;
       const token = createToken(newUser._id);
       res
         .cookie("access_token", token, { secure: true, maxAge: maxAge * 1000 })
@@ -111,4 +113,23 @@ const google = async (req, res, next) => {
   }
 };
 
-export { signup, signin, google };
+// profile
+const profile = async (req, res) => {
+  const { email } = req.body;
+  try {
+    const user = await User.findOneAndUpdate({ email });
+
+    if(user){
+    const saltRounds = 12;
+    const salt = await bcrypt.genSalt(saltRounds);
+    const hash = await bcrypt.hash(generateRandomPassword, salt);
+
+    
+    }
+
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+export { signup, signin, google, profile };
