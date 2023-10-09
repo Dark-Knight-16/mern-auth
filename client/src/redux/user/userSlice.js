@@ -10,11 +10,14 @@ export const userSlice = createSlice({
     reducers: {
         signInSuccess: (state, action) => {
             state.currentUser = action.payload
+        },
+        signOut:(state, action) => {
+            state.currentUser = null
         }
     }
 })
 
 // Action creators are generated for each case reducer function
-export const { signInSuccess } = userSlice.actions
+export const { signInSuccess, signOut } = userSlice.actions
 
 export default userSlice.reducer

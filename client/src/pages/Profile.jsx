@@ -16,13 +16,11 @@ const Profile = () => {
   const [image, setImage] = useState(undefined);
   const { currentUser } = useSelector((state) => state.user);
 
-  console.log(image);
-
   useEffect(() => {
     if (image) {
       handleFileUpload(image);
     }
-  }, [image]);
+  }, []);
 
   const handleFileUpload = async (image) => {
     const storage = getStorage(app);
@@ -84,7 +82,7 @@ const Profile = () => {
     e.preventDefault();
 
     try {
-      const response = await fetch("/api/auth/profile", {
+      const response = await fetch(`/api/user/update/${currentUser.user._id}`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -92,12 +90,53 @@ const Profile = () => {
         body: JSON.stringify(formData),
       });
 
-      const data = response.json();
+      const data = await response.json();
+
+      if (data.success === true) {
+        toast.success(data.message, {
+          position: "top-center",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+        });
+      } else {
+        toast.error(data.message, {
+          position: "top-center",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+        });
+      }
       console.log(data);
     } catch (err) {
       console.log(err);
     }
   };
+
+  //delete user
+  const handleDeleteUser = async () => {
+    try{
+      const response = await fetch(`/api/user/delete/${currentUser.user._id}`, {
+        method: 'DELETE'
+      })
+
+      const data = await response.json()
+      if(data.success === false){
+        return ;
+      }
+    }
+    catch(err){
+      console.log(err)
+    }
+  }
 
   if (currentUser) {
     return (
@@ -128,7 +167,7 @@ const Profile = () => {
             placeholder="username"
             className="py-3 pl-4 w-full rounded-md bg-slate-100"
             onChange={handleChange}
-            value={currentUser.user.username}
+            defaultValue={currentUser.user.username}
           />
           <input
             type="text"
@@ -136,7 +175,7 @@ const Profile = () => {
             placeholder="email"
             className="py-3 pl-4 w-full rounded-md bg-slate-100"
             onChange={handleChange}
-            value={currentUser.user.email}
+            defaultValue={currentUser.user.email}
           />
           <input
             type="password"
@@ -155,6 +194,7 @@ const Profile = () => {
         <button
           type="submit"
           className="p-3 w-full text-white bg-red-500 rounded-md hover:opacity-80"
+          onClick={handleDeleteUser}
         >
           Delete Profile
         </button>

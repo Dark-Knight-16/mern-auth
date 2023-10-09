@@ -1,10 +1,12 @@
 "use strict";
 
 import express from "express";
-import { login } from "../controllers/userController.js";
+import { updateUser, deleteUser } from "../controllers/userController.js";
+import { verifyToken } from "../utils/authUser.js";
 
 const userRouter = express.Router();
 
-userRouter.get("/login", login);
+userRouter.post("/update/:id", verifyToken, updateUser);
+userRouter.post("/delete/:id", verifyToken, deleteUser);
 
 export default userRouter;

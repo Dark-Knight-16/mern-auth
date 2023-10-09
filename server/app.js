@@ -5,6 +5,7 @@ import mongoose from "mongoose";
 import dotenv from "dotenv";
 import userRouter from "../routes/userRoute.js";
 import authRouter from "../routes/authRoute.js";
+import cookieParser from "cookie-parser";
 
 dotenv.config();
 
@@ -12,7 +13,8 @@ const app = express();
 const PORT = process.env.PORT;
 
 // middleware
-app.use(express.json())
+app.use(express.json());
+app.use(cookieParser());
 
 // database connection
 main().catch((err) => console.log(err));
@@ -24,8 +26,8 @@ async function main() {
 }
 
 // routes
-app.use('/api/user', userRouter);
-app.use('/api/auth', authRouter);
+app.use("/api/user", userRouter);
+app.use("/api/auth", authRouter);
 
 // listener
 app.listen(PORT, () => {

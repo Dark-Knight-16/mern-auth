@@ -132,4 +132,12 @@ const profile = async (req, res) => {
   }
 };
 
-export { signup, signin, google, profile };
+// sign out
+const signOut = () => {
+  res.clearCookie('access_token').status(200).json({
+    success: true,
+    message: 'User signed out !'
+  })
+}
+
+export { signup, signin, google, profile, signOut };

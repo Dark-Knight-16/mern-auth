@@ -41,7 +41,7 @@ const OAuth = () => {
           theme: "colored",
         });
         dispatch(signInSuccess(data));
-        navigate('/')
+        navigate('/profile')
       } else {
         toast.error(data.message, {
           position: "top-center",

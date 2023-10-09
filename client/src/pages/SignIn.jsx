@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
@@ -8,7 +7,6 @@ import OAuth from "../components/OAuth";
 
 const SignIn = () => {
   const [formData, setFormData] = useState({});
-  const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const handleChange = (e) => {
@@ -28,7 +26,7 @@ const SignIn = () => {
       });
 
       const data = await response.json();
-
+     
       if (data.success === true) {
         toast.success(data.message, {
           position: "top-center",
@@ -41,9 +39,7 @@ const SignIn = () => {
           theme: "colored",
         });
 
-        // console.log(data)
         dispatch(signInSuccess(data));
-        navigate("/profile");
       } else {
         toast.error(data.message, {
           position: "top-center",

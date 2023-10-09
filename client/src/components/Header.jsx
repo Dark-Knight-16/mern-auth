@@ -3,12 +3,16 @@ import { BarIcon } from "./BarIcon";
 import { CrossIcon } from "./CrossIcon";
 import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import { signOut } from "../redux/user/userSlice";
+import { useNavigate } from "react-router-dom";
 
 const Header = () => {
   const [toggleMenu, setToggleMenu] = useState(false);
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
   const { currentUser } = useSelector((state) => state.user);
-  console.log(currentUser);
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
 
   const handleClick = () => {
     setToggleMenu(!toggleMenu);
@@ -28,6 +32,20 @@ const Header = () => {
       window.removeEventListener("resize", handleWindowResize);
     };
   }, [windowWidth]);
+
+
+  // signout
+  const handleSignOut = async () => {
+    try{
+      await fetch('/api/auth/sign-out')
+      dispatch(signOut())
+      navigate('/sign-in')
+    }
+    catch(err){
+      console.log(err)
+    }
+  }
+
 
   return (
     <header className="flex justify-between items-center px-5 py-5 bg-lime-200 lg:py-5 lg:px-20">
@@ -70,7 +88,7 @@ const Header = () => {
           </li>
 
           {currentUser ? (
-            <li className="p-2 text-white bg-red-500 rounded-md">
+            <li className="p-2 text-white bg-red-500 rounded-md" onClick={handleSignOut}>
               <NavLink to={"/sign-out"}>Sign Out</NavLink>
             </li>
           ) : (
